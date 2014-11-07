@@ -34,17 +34,29 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
         this.mkdir("app/sections");
         this.mkdir("build");
     },
-    copyMainFiles: function(){
-        this.copy("_footer.html", "app/footer.html");
-        this.copy("_gruntfile.js", "Gruntfile.js");
-        this.copy("_package.json", "package.json");
-        this.copy("_main.css", "app/css/main.css");
+    writing: {
+        app: function () {
+            this.dest.mkdir('app');
+            this.dest.mkdir('app/templates');
 
-        var context = {
-            site_name: this.appName
-        };
+            this.src.copy("_footer.html", "app/footer.html");
+            this.src.copy("_gruntfile.js", "Gruntfile.js");
+            this.src.copy("_main.css", "app/css/main.css");
 
-        this.template("_header.html", "app/header.html", context);
+            this.src.copy('_package.json', 'package.json');
+            this.src.copy('_bower.json', 'bower.json');
+
+            var context = {
+                site_name: this.appName
+            };
+
+            this.template("_header.html", "app/header.html", context);
+        },
+
+        projectfiles: function () {
+            this.src.copy('editorconfig', '.editorconfig');
+            this.src.copy('jshintrc', '.jshintrc');
+        }
     },
     generateDemoSection: function() {
           if (this.addDemoSection) {
@@ -56,68 +68,14 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
               this.write( "app/menu.html", "");
           }
     },
-    runNpm: function(){
-        var done = this.async();
-        this.npmInstall("", function(){
-            console.log("\nEverything Setup !!!\n");
-            done();
+    end: function () {
+        this.installDependencies({
+            callback: function () {
+                console.log('Everything is ready!');
+            }
         });
     }
+
 });
 
 module.exports = AngularCalfGenerator;
-
-// 'use strict';
-// var util = require('util');
-// var path = require('path');
-// var yeoman = require('yeoman-generator');
-// var yosay = require('yosay');
-
-// var AngularcalfGenerator = yeoman.generators.Base.extend({
-//   initializing: function () {
-//     this.pkg = require('../package.json');
-//   },
-
-//   prompting: function () {
-//     var done = this.async();
-
-//     // Have Yeoman greet the user.
-//     this.log(yosay(
-//       'Welcome to the great Angularcalf generator!'
-//     ));
-
-//     var prompts = [{
-//       type: 'confirm',
-//       name: 'someOption',
-//       message: 'Would you like to enable this option?',
-//       default: true
-//     }];
-
-//     this.prompt(prompts, function (props) {
-//       this.someOption = props.someOption;
-
-//       done();
-//     }.bind(this));
-//   },
-
-//   writing: {
-//     app: function () {
-//       this.dest.mkdir('app');
-//       this.dest.mkdir('app/templates');
-
-//       this.src.copy('_package.json', 'package.json');
-//       this.src.copy('_bower.json', 'bower.json');
-//     },
-
-//     projectfiles: function () {
-//       this.src.copy('editorconfig', '.editorconfig');
-//       this.src.copy('jshintrc', '.jshintrc');
-//     }
-//   },
-
-//   end: function () {
-//     this.installDependencies();
-//   }
-// });
-
-// module.exports = AngularcalfGenerator;

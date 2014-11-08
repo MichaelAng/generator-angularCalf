@@ -59,37 +59,29 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
             this.src.copy("_gruntfile.js", "Gruntfile.js");
 
             this.template("_index.html", "app/index.html", context);
-            this.src.copy("_main.css", "app/assets/styles/main.css");
+            this.src.copy("assets/styles/_main.css", "app/assets/styles/main.css");
+            this.src.copy("assets/images/_elephant-logo.png", "app/assets/images/elephant-logo.png");
+
             this.template("_routers.js", "app/components/" + this.appName + ".routers.js" ,context);
             this.template("_modules.js", "app/components/" + this.appName + ".modules.js" ,context);
 
-            this.template("core/header/_header.module.js", "app/components/core/header/header.module.js" ,context);
-            this.template("core/header/_header.directive.js", "app/components/core/header/header.directive.js" ,context);
-            this.template("core/header/_header.view.html", "app/components/core/header/header.view.html" ,context);
+            this.template("components/core/header/_header.module.js", "app/components/core/header/header.module.js" ,context);
+            this.template("components/core/header/_header.directive.js", "app/components/core/header/header.directive.js" ,context);
+            this.template("components/core/header/_header.view.html", "app/components/core/header/header.view.html" ,context);
 
-            this.template("about/_about.module.js", "app/components/about/about.module.js" ,context);
-            this.template("about/_about.controller.js", "app/components/about/about.controller.js" ,context);
-            this.template("about/_about.view.html", "app/components/about/about.view.html" ,context);
+            this.template("components/about/_about.module.js", "app/components/about/about.module.js" ,context);
+            this.template("components/about/_about.controller.js", "app/components/about/about.controller.js" ,context);
+            this.template("components/about/_about.view.html", "app/components/about/about.view.html" ,context);
 
-            this.template("main/_main.module.js", "app/components/main/main.module.js" ,context);
-            this.template("main/_main.controller.js", "app/components/main/main.controller.js" ,context);
-            this.template("main/_main.view.html", "app/components/main/main.view.html" ,context);
+            this.template("components/main/_main.module.js", "app/components/main/main.module.js" ,context);
+            this.template("components/main/_main.controller.js", "app/components/main/main.controller.js" ,context);
+            this.template("components/main/_main.view.html", "app/components/main/main.view.html" ,context);
         },
 
         projectfiles: function () {
             this.src.copy('editorconfig', '.editorconfig');
             this.src.copy('jshintrc', '.jshintrc');
         }
-    },
-    generateDemoSection: function() {
-          if (this.addDemoSection) {
-              var done = this.async();
-              this.invoke("onepage:section", {args: ["Demo Section"]}, function(){
-                  done();
-              });
-          } else {
-              this.write( "app/menu.html", "");
-          }
     },
     end: function () {
         this.installDependencies({

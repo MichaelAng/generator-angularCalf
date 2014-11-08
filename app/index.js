@@ -38,6 +38,8 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
         this.mkdir("app/assets/styles");
         this.mkdir("app/components");
         this.mkdir("app/components/about");
+        this.mkdir("app/components/core");
+        this.mkdir("app/components/core/header");
         this.mkdir("app/components/main");
         this.mkdir("dist");
         this.mkdir("test");
@@ -56,11 +58,14 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
             this.src.copy('_bower.json', 'bower.json');
             this.src.copy("_gruntfile.js", "Gruntfile.js");
 
+            this.template("_index.html", "app/index.html", context);
             this.src.copy("_main.css", "app/assets/styles/main.css");
-            this.src.copy("_footer.html", "app/footer.html");
-
             this.template("_routers.js", "app/components/" + this.appName + ".routers.js" ,context);
             this.template("_modules.js", "app/components/" + this.appName + ".modules.js" ,context);
+
+            this.template("core/header/_header.module.js", "app/components/core/header/header.module.js" ,context);
+            this.template("core/header/_header.directive.js", "app/components/core/header/header.directive.js" ,context);
+            this.template("core/header/_header.view.html", "app/components/core/header/header.view.html" ,context);
 
             this.template("about/_about.module.js", "app/components/about/about.module.js" ,context);
             this.template("about/_about.controller.js", "app/components/about/about.controller.js" ,context);
@@ -69,8 +74,6 @@ var AngularCalfGenerator = yeoman.generators.Base.extend({
             this.template("main/_main.module.js", "app/components/main/main.module.js" ,context);
             this.template("main/_main.controller.js", "app/components/main/main.controller.js" ,context);
             this.template("main/_main.view.html", "app/components/main/main.view.html" ,context);
-
-            this.template("_header.html", "app/header.html", context);
         },
 
         projectfiles: function () {
